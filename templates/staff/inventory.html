@@ -1,0 +1,142 @@
+{% extends 'basic.html' %}
+{% block title %}All Bookings{% endblock title %}
+
+{% block body %}
+<div>
+    <h3 class="text-center  text-success">All Bookings </h3>
+    <table class="table">
+        <thead>
+            <th>Name of item</th>
+            <th>Total</th>
+            <th>Available</th>
+            <th>Not Available</th>
+            <th>Actions</th>
+        </thead>
+
+        {% for item in items %}
+        <tr>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.item_total }}</td>
+            <td>{{ item.item_available }}</td>
+            <td>{{ item.item_not_available }}</td>
+            <td colspan="2">
+
+                <button class="btn-group btn-danger btn-primary d-flex justify-content-evenly" data-toggle="modal"
+                    data-target="#edit-item-{{item.id}}">Edit item</button>
+                {% comment %} <a href="/staff/panel/view-room?roomid={{each_room.id}}"><Button
+                        class="btn btn-primary">View</Button></a> {% endcomment %}
+            </td>
+        </tr>
+
+        <!--Modal for Edit item starts here-->
+        <!-- The Modal -->
+        <div class="modal" id="edit-item-{{item.id}}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Item</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col mx-auto">
+
+                                    <form action="/staff/panel/edit-item/{{item.id}}" method="POST">
+                                        {% csrf_token %}
+
+                                        <div class="form-group">
+                                            <label for="pwd">Name of item:</label>
+                                            <input type="text" class="form-control " id="name" name="name">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pwd">Total Quantity:</label>
+                                            <input type="number" class="form-control " id="total" name="total">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pwd">Available:</label>
+                                            <input type="number" class="form-control " id="available" name="available">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Edit Item</button>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--Modal for Add New Room Ends here-->
+        
+        {% endfor %}
+    </table>
+
+    <!--Modal for Add New Room starts from here-->
+
+    <!-- The Modal -->
+    <div class="modal" id="newitem">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Item</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col mx-auto">
+
+                                <form action="/staff/panel/add-new-item" method="POST">
+                                    {% csrf_token %}
+
+                                    <div class="form-group">
+                                        <label for="pwd">Name of item:</label>
+                                        <input type="text" class="form-control " id="name" name="name">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pwd">Total Quantity:</label>
+                                        <input type="number" class="form-control " id="total" name="total">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pwd">Available:</label>
+                                        <input type="number" class="form-control " id="available" name="available">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Add Item</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--Modal for add item Ends here-->
+
+    <div class="container my-4 text-center">
+        <button class="btn-group btn-primary " data-toggle="modal" data-target="#newitem">Add item</button>
+    </div>
+</div>
+
+{% endblock body %}
